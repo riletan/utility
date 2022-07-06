@@ -2,9 +2,17 @@
 # riletan
 # simple script to connect to ec2 instance via session manager
 # Required: aws-cli aws-session-manager-plugin jq xargs
-CURRENT_PROFILE='mf-dev'
 #################Configuration Section#############################
-SHOME=/mnt/c/Users/riletan/Workspace/Scripts
+if [ "$2" == "refresh" ] || [ "$2" == "r" ] ; then
+    FILTER=$3
+    CURRENT_PROFILE=$1
+    [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
+else
+    CURRENT_PROFILE=$1
+    FILTER=$2
+    [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
+fi
+SHOME=/mnt/c/Users/riletan/Workspace/Scripts/shared/utility/scripts
 TMP=$SHOME/tmp/.$CURRENT_PROFILE.instances
 SCACHE=$SHOME/tmp/.$CURRENT_PROFILE.cache
 PROMPT="On account: $CURRENT_PROFILE Please select a running instance to connect."
@@ -54,11 +62,12 @@ function parseInstances()
     fi
 }
 ####################  Main ############################
-if [ "$1" == "refresh" ] || [ "$1" == "r" ] ; then
+if [ "$2" == "refresh" ] || [ "$2" == "r" ] ; then
     fetchInstances
 else
     [[ ! -f $SCACHE ]] && fetchInstances
 fi
+
 
 rm -f $TMP
 list_instances=`cat $SCACHE | jq -c '.[]'`
@@ -67,10 +76,18 @@ for instance in $list_instances; do
     Name=`echo $instance | jq -c '.[]' | jq '.Name' | xargs echo`
     PrivateID=`echo $instance | jq -c '.[]' | jq '.PrivateIP' | xargs echo`
     if [ ! $InstanceID == "" ]; then
-        echo "$Name|$InstanceID|$PrivateID" >> $TMP
+        if [ ! $FILTER == "" ]; then
+            if [[ $Name == *"$FILTER"* ]]; then
+                echo "$Name|$InstanceID|$PrivateID" >> $TMP
+            fi
+        else
+            echo "$Name|$InstanceID|$PrivateID" >> $TMP
+        fi
     fi
 done
-[[ ! -f $TMP ]] && Echo "There're no instances on $CURRENT_PROFILE" && exit 1
+
+[[ ! -f $TMP ]] && echo "There're no instances matched on $CURRENT_PROFILE" && exit 1
+
 echo 'Please select from the instances list:'
 nl $TMP
 count="$(wc -l $TMP | cut -f 1 -d' ')"

@@ -12,7 +12,7 @@ else
     FILTER=$2
     [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
 fi
-SHOME=/mnt/c/Users/riletan/Workspace/Scripts/shared/utility/scripts
+SHOME=script_home_here
 TMP=$SHOME/tmp/.$CURRENT_PROFILE.instances
 SCACHE=$SHOME/tmp/.$CURRENT_PROFILE.cache
 PROMPT="On account: $CURRENT_PROFILE Please select a running instance to connect."

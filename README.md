@@ -10,7 +10,8 @@ SSM: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manage
 
 ## Setup cli profile
 Add profile configuration like this in ~/.aws/config
-
+You can get these information right after login sso account
+```
 [profile my-dev-profile]
 sso_start_url = https://my-sso-portal.awsapps.com/start
 sso_region = us-east-1
@@ -18,7 +19,7 @@ sso_account_id = 123456789011
 sso_role_name = readOnly
 region = us-west-2
 output = json
-
+```
 
 ## ssm_connect.sh : A small utility to connect to ec2 instances that is using session manager 
 ### Install

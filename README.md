@@ -37,5 +37,7 @@ output = json
      ```
 ### How to use
     ```
+    aws sso login --profile=profile_name 
+    
     sc profile_name refresh|r filter_pattern
     ```

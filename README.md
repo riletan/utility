@@ -1,6 +1,6 @@
 # utility script on devops - sysops stuff
 
-## Setup aws cli and 
+## Setup aws cli and  session maanger plugin
 
 Please follow AWS Docs to install cli and session maanger plugin
 

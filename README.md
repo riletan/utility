@@ -36,15 +36,15 @@ output = json
      sudo ln -s $PWD/ssm_connect.sh /usr/local/bin/sc
      ```
 ### How to use
-    Use must login to sso before you can use the script. The login session will last 8hours.
+Use must login to sso before you can use the script. The login session will last 8hours.
     ```
       aws sso login --profile=profile_name 
     ```
-    The first argument is profile_name. (Required)
+The first argument is profile_name. (Required)
 
-    The second argument is `r` or refresh. You need to refresh to see the change on instances (add/delete/change). (Optional)
+The second argument is `r` or refresh. You need to refresh to see the change on instances (add/delete/change). (Optional)
 
-    The third argument is the filter pattern. If you want to see the instances that contain the `filter_pattern` (Optional)
+The third argument is the filter pattern. If you want to see the instances that contain the `filter_pattern` (Optional)
     ```
       sc profile_name refresh|r filter_pattern
     ```

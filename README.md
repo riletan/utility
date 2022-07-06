@@ -38,9 +38,9 @@ output = json
 ### How to use
 Use must login to sso before you can use the script. The login session will last 8hours.
 
-    ```
-      aws sso login --profile=profile_name 
-    ```
+```
+    aws sso login --profile=profile_name 
+```
 
 The first argument is profile_name. (Required)
 
@@ -48,7 +48,7 @@ The second argument is `r` or `refresh`. You need to refresh to see the change o
 
 The third argument is the filter pattern. If you want to see the instances that contain the `filter_pattern` (Optional)
 
-    ```
-      sc profile_name refresh|r filter_pattern
-    ```
+```
+    sc profile_name refresh|r filter_pattern
+```
     

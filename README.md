@@ -24,9 +24,13 @@ output = json
 ### Install
      ```
      # Clone this repository 
-     git clone git@github.com:riletan/utility.git
+     git clone https://github.com/riletan/utility.git
      cd utility/scripts
+     (Linux)
      sed -i "s|script_home_here|$PWD|g" ssm_connect.sh
+     (MacOS)
+     sed -i -e "s|script_home_here|$PWD|g" ssm_connect.sh
+     (both)
      mkdir -p tmp
      sudo ln -s $PWD/ssm_connect.sh /usr/local/bin/sc
      ```

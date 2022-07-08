@@ -29,7 +29,8 @@ output = json
 ## aws_helper.sh: a helper script that help login and deploy CDK|SAM app with different profiles
 
     cd utility/scripts
-    sudo ln -s $PWD/aws_helper /usr/local/bin/amz
+    chmod u+x aws_helper.sh
+    sudo ln -s $PWD/aws_helper.sh /usr/local/bin/amz
     usage: amz login
            amz cdk deploy|...
            amz sam deploy|...
@@ -39,6 +40,7 @@ output = json
 
      cd utility/scripts
      # Linux
+     chmod u+x ssm_connect.sh
      sed -i "s|script_home_here|$PWD|g" ssm_connect.sh
      # MacOS
      sed -i -e "s|script_home_here|$PWD|g" ssm_connect.sh

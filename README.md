@@ -21,11 +21,22 @@ region = us-west-2
 output = json
 ```
 
-## ssm_connect.sh : A small utility to connect to ec2 instances that is using session manager 
+## Clone this repository 
+```
+    git clone https://github.com/riletan/utility.git
+```
+
+## aws_helper.sh: a helper script that help login and deploy CDK|SAM app with different profiles
+
+    cd utility/scripts
+    sudo ln -s $PWD/aws_helper /usr/local/bin/amz
+    usage: amz login
+           amz cdk deploy|...
+           amz sam deploy|...
+
+## ssm_connect.sh : a small utility to connect to ec2 instances that is using session manager 
 ### Install
-     
-     # Clone this repository 
-     git clone https://github.com/riletan/utility.git
+
      cd utility/scripts
      # Linux
      sed -i "s|script_home_here|$PWD|g" ssm_connect.sh
@@ -51,4 +62,8 @@ The third argument is the filter pattern. If you want to see the instances that 
 ```
     sc profile_name refresh|r filter_pattern
 ```
+
+
+
+
     

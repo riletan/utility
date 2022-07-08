@@ -27,11 +27,11 @@ ini_get () {
 all_profiles=$( cat ~/.aws/config | grep profile | awk '{print $2}' )
 echo $all_profiles
 
-rm $TMP -f
+rm -f $TMP
 for pro in $all_profiles; do 
-    account_id=$( ini_get $AWS_CONFIG ${pro::-1} sso_account_id )
+    account_id=$( ini_get $AWS_CONFIG ${pro%?} sso_account_id )
     region=$( ini_get $AWS_CONFIG mf-prd-in region )
-    echo " ${pro::-1}|$account_id|$region|" >> $TMP
+    echo " ${pro%?}|$account_id|$region|" >> $TMP
 done
 
 echo 'Please select profile:'

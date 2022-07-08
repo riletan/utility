@@ -66,11 +66,11 @@ case $1 in
   cdk)
     pwd
     echo "CDK $2 to account $accountid region $accregion with profile=$profile_name"
-    cdk --profile=$profile_name $2
+    $@ --profile=$profile_name
     ;;
   sam)
     echo "Sam $2 to  account $accountid region $accregion with profile=$profile_name"
-    sam --profile=$profile_name $2
+    $@ --profile=$profile_name
     ;;
   *)
     echo "Usage $(basename "$0") login|cdk|sam"

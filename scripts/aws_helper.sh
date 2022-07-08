@@ -25,23 +25,25 @@ ini_get () {
 [[ $1 != 'login' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'cdk' ]] && echo "Usage $(basename "$0") login|cdk|sam" && exit 1
 
 all_profiles=$( cat ~/.aws/config | grep profile | awk '{print $2}' )
-echo $all_profiles
+# echo $all_profiles
 
 rm -f $TMP
 for pro in $all_profiles; do 
     account_id=$( ini_get $AWS_CONFIG ${pro%?} sso_account_id )
-    region=$( ini_get $AWS_CONFIG ${pro%?} region )
+    region=$( ini_get $AWS_CONFIG ${pro%} sso_region )
     echo " ${pro%?}|$account_id|$region|" >> $TMP
 done
 
 echo 'Please select profile:'
 nl $TMP
-count="$(wc -l $TMP | cut -f 1 -d' ')"
+count="$(cat $TMP | wc -l | xargs)"
 n=""
+
 while true; do
     read -p 'Select option: ' n
     # If $n is an integer between one and $count...
-    if [ "$n" -eq "$n" ] && [ "$n" -gt 0 ] && [ "$n" -le "$count" ]; then
+    echo $count
+    if [[ "$n" -eq "$n" && "$n" -gt 0 && "$n" -le "$count" ]]; then
         break
     fi
 done
@@ -52,7 +54,6 @@ IFS='|' read -ra ADDR <<< "$value"
 
 # aws --profile $CURRENT_PROFILE ssm start-session --target "${ADDR[1]}"
 
-echo "${ADDR[1]}"
 profile_name=`echo ${ADDR[0]} | xargs`
 accountid=${ADDR[1]}
 accregion=${ADDR[2]}
@@ -64,11 +65,11 @@ case $1 in
     ;;
   cdk)
     pwd
-    echo "CDK deploy to account $accountid region $accregion with profile=$profile_name"
+    echo "CDK $2 to account $accountid region $accregion with profile=$profile_name"
     cdk --profile=$profile_name $2
     ;;
   sam)
-    echo "Sam deploy to  account $accountid region $accregion with profile=$profile_name"
+    echo "Sam $2 to  account $accountid region $accregion with profile=$profile_name"
     sam --profile=$profile_name $2
     ;;
   *)

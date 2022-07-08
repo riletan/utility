@@ -30,7 +30,7 @@ echo $all_profiles
 rm -f $TMP
 for pro in $all_profiles; do 
     account_id=$( ini_get $AWS_CONFIG ${pro%?} sso_account_id )
-    region=$( ini_get $AWS_CONFIG mf-prd-in region )
+    region=$( ini_get $AWS_CONFIG ${pro%?} region )
     echo " ${pro%?}|$account_id|$region|" >> $TMP
 done
 

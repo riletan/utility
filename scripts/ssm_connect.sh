@@ -12,7 +12,7 @@ else
     FILTER=$2
     [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
 fi
-SHOME=script_home_here
+SHOME=/Users/rile/Workspace/utility/scripts
 TMP=$SHOME/tmp/.$CURRENT_PROFILE.instances
 SCACHE=$SHOME/tmp/.$CURRENT_PROFILE.cache
 PROMPT="On account: $CURRENT_PROFILE Please select a running instance to connect."
@@ -90,12 +90,12 @@ done
 
 echo 'Please select from the instances list:'
 nl $TMP
-count="$(wc -l $TMP | cut -f 1 -d' ')"
+count="$(cat $TMP | wc -l | xargs)"
 n=""
 while true; do
     read -p 'Select option: ' n
     # If $n is an integer between one and $count...
-    if [ "$n" -eq "$n" ] && [ "$n" -gt 0 ] && [ "$n" -le "$count" ]; then
+    if [[ "$n" -eq "$n" ]] && [[ "$n" -gt 0 ]] && [[ "$n" -le "$count" ]]; then
         break
     fi
 done

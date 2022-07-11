@@ -1,14 +1,26 @@
-# utility script on devops - sysops stuff
+# utility scripts on devops - sysops stuff
 
-## Setup aws cli and  session maanger plugin
+## Setup aws cli and  extra plugins
 
-Please follow AWS Docs to install cli and session maanger plugin
+Please follow AWS Docs to install software
 
 CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
-SSM: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
+→ Required
 
-## Setup cli profile
+SSM: → https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
+
+→ Optional, install it if you want to use session maganer (ssm connect bellow)
+
+CDK → [https://aws.amazon.com/getting-started/guides/setup-cdk/](https://aws.amazon.com/getting-started/guides/setup-cdk/)
+
+→ Optional, install it if you want to deploy for application with CDK
+
+SAM → https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html
+
+→ Optional, install it if you want to deploy severless applicaion via SAM
+
+## Setup cli profiles
 Add profile configuration like this in ~/.aws/config
 You can get these information right after login sso account
 ```
@@ -28,6 +40,7 @@ output = json
 
 ## aws_helper.sh: a helper script that help login and deploy CDK|SAM app with different profiles
 
+Install on Linux/WindowWSL/MacOS
     cd utility/scripts
     chmod u+x aws_helper.sh
     sudo ln -s $PWD/aws_helper.sh /usr/local/bin/amz
@@ -38,21 +51,29 @@ output = json
 ## ssm_connect.sh : a small utility to connect to ec2 instances that is using session manager 
 ### Install
 
+Install on Linux/ Window WSL
+```
      cd utility/scripts
-     # Linux
      chmod u+x ssm_connect.sh
      sed -i "s|script_home_here|$PWD|g" ssm_connect.sh
-     # MacOS
-     sed -i -e "s|script_home_here|$PWD|g" ssm_connect.sh
-     # both
      mkdir -p tmp
      sudo ln -s $PWD/ssm_connect.sh /usr/local/bin/sc
-     
+```
+
+Install on MacOS
+```
+     cd utility/scripts
+     sed -i -e "s|script_home_here|$PWD|g" ssm_connect.sh
+     mkdir -p tmp
+     sudo ln -s $PWD/ssm_connect.sh /usr/local/bin/sc
+```
+I'v just tested the scripts on Window wsl and MacOS. If you face any issues, please let' me know.
+
 ### How to use
-Use must login to sso before you can use the script. The login session will last 8hours.
+Use must login to sso before you can use the script. If you have installed the aws helper script above, just run the script and chosse the profile to login. If not, just run aws native command below, the login session will last 8hours.
 
 ```
-    aws sso login --profile=profile_name 
+    aws sso login --profile=profile_name
 ```
 
 The first argument is profile_name. (Required)

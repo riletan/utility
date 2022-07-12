@@ -22,7 +22,7 @@ ini_get () {
 
 # main scripts
 
-[[ $1 != 'login' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'sam' ]] && echo "Usage $(basename "$0") login|cdk|sam" && exit 1
+[[ $1 != 'login' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'sam' ]] && [[ $1 != 'aws' ]] && echo "Usage $(basename "$0") login|cdk|sam" && exit 1
 
 all_profiles=$( cat ~/.aws/config | grep profile | awk '{print $2}' )
 # echo $all_profiles

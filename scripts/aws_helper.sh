@@ -63,13 +63,9 @@ case $1 in
     echo "Logging to $profile_name"
     aws sso login --profile=$profile_name
     ;;
-  cdk)
+  cdk|sam|aws)
     pwd
     echo "CDK $2 to account $accountid region $accregion with profile=$profile_name"
-    $@ --profile=$profile_name
-    ;;
-  sam)
-    echo "Sam $2 to  account $accountid region $accregion with profile=$profile_name"
     $@ --profile=$profile_name
     ;;
   *)

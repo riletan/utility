@@ -51,9 +51,14 @@ Install on Linux/WindowWSL/MacOS
 ## ssm_connect.sh : a small utility to connect to ec2 instances that is using session manager 
 ### Install
 
-Install on Linux/ Window WSL
+Instll JQ
+You need to have [JQ](https://stedolan.github.io/jq/) installed to run the script 
+
+
+Install on Linux/ Window WSL (Debian)
 ```
      cd utility/scripts
+     sudo apt-get install jq
      chmod u+x ssm_connect.sh
      sed -i "s|script_home_here|$PWD|g" ssm_connect.sh
      mkdir -p tmp
@@ -63,6 +68,7 @@ Install on Linux/ Window WSL
 Install on MacOS
 ```
      cd utility/scripts
+     brew install jq
      sed -i -e "s|script_home_here|$PWD|g" ssm_connect.sh
      mkdir -p tmp
      sudo ln -s $PWD/ssm_connect.sh /usr/local/bin/sc

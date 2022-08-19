@@ -39,7 +39,7 @@ output = json
 ```
 
 ## aws_helper.sh: a helper script that help login and deploy CDK|SAM app with different profiles
-
+```
 Install on Linux/WindowWSL/MacOS
     cd utility/scripts
     chmod u+x aws_helper.sh
@@ -47,7 +47,7 @@ Install on Linux/WindowWSL/MacOS
     usage: amz login
            amz cdk deploy|...
            amz sam deploy|...
-
+```
 ## ssm_connect.sh : a small utility to connect to ec2 instances that is using session manager 
 ### Install
 

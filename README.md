@@ -39,11 +39,13 @@ output = json
 ```
 
 ## aws_helper.sh: a helper script that help login and deploy CDK|SAM app with different profiles
-```
+
 Install on Linux/WindowWSL/MacOS
+```
     cd utility/scripts
     chmod u+x aws_helper.sh
     sudo ln -s $PWD/aws_helper.sh /usr/local/bin/amz
+    
     usage: amz login
            amz cdk deploy|...
            amz sam deploy|...

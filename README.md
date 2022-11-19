@@ -46,13 +46,12 @@ Install on MacOS
     sh utility/install.macos
 ```
 
-### Use Case
+## Use Cases
 * Login to AWS Profile 
 ```
-aws login
+    aws login
 ```
 * Choose a profile to run any aws cli command you want
- E.g
 ```
     amz aws s3 ls 
     amz cdk deploy 

@@ -37,13 +37,13 @@ Install on Linux/WindowWSL
 ```
     cd somewhere safe
     git clone https://github.com/riletan/utility.git
-    sh install.linux
+    sh utility/install.linux
 ```
 Install on MacOS
 ```
     cd somewhere safe
     git clone https://github.com/riletan/utility.git
-    sh install.macos
+    sh utility/install.macos
 ```
 
 ### Use Case

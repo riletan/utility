@@ -32,50 +32,19 @@ sso_role_name = readOnly
 region = us-west-2
 output = json
 ```
-
-## Clone this repository 
+## Install
+Install on Linux/WindowWSL
 ```
+    cd somewhere safe
     git clone https://github.com/riletan/utility.git
+    sh install.linux
 ```
-
-## aws_helper.sh: a helper script that help login and deploy CDK|SAM app with different profiles
-
-Install on Linux/WindowWSL/MacOS
-```
-    cd utility/scripts
-    chmod u+x aws_helper.sh
-    sudo ln -s $PWD/aws_helper.sh /usr/local/bin/amz
-    
-    usage: amz login
-           amz cdk deploy|...
-           amz sam deploy|...
-```
-## ssm_connect.sh : a small utility to connect to ec2 instances that is using session manager 
-### Install
-
-Instll JQ
-You need to have [JQ](https://stedolan.github.io/jq/) installed to run the script 
-
-
-Install on Linux/ Window WSL (Debian)
-```
-     cd utility/scripts
-     sudo apt-get install jq
-     chmod u+x ssm_connect.sh
-     sed -i "s|script_home_here|$PWD|g" ssm_connect.sh
-     mkdir -p tmp
-     sudo ln -s $PWD/ssm_connect.sh /usr/local/bin/sc
-```
-
 Install on MacOS
 ```
-     cd utility/scripts
-     brew install jq
-     sed -i -e "s|script_home_here|$PWD|g" ssm_connect.sh
-     mkdir -p tmp
-     sudo ln -s $PWD/ssm_connect.sh /usr/local/bin/sc
+    cd somewhere safe
+    git clone https://github.com/riletan/utility.git
+    sh install.macos
 ```
-I'v just tested the scripts on Window wsl and MacOS. If you face any issues, please let' me know.
 
 ### How to use
 Use must login to sso before you can use the script. If you have installed the aws helper script above, just run the script and chosse the profile to login. If not, just run aws native command below, the login session will last 8hours.

@@ -13,7 +13,7 @@ ini_get () {
             exit 
         }
         in_section && $1 == "" {
-            print "not found" > "/dev/stderr"
+            # print "not found" > "/dev/stderr"
             exit 1
         }
     ' "$1"
@@ -22,7 +22,7 @@ ini_get () {
 
 # main scripts
 
-[[ $1 != 'login' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'sam' ]] && [[ $1 != 'aws' ]] && echo "Usage $(basename "$0") login|cdk|sam" && exit 1
+[[ $1 != 'login' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'cdk' ]] && [[ $1 != 'sam' ]] && [[ $1 != 'aws' ]] && [[ $1 != 'sc' ]] && echo "Usage $(basename "$0") login|cdk|sam" && exit 1
 
 all_profiles=$( cat ~/.aws/config | grep profile | awk '{print $2}' )
 # echo $all_profiles
@@ -68,6 +68,9 @@ case $1 in
     echo "CDK $2 to account $accountid region $accregion with profile=$profile_name"
     $@ --profile=$profile_name
     ;;
+  sc)
+    echo "Connecting to instance using Session Manager"
+    $@ --profile=$profile_name
   *)
     echo "Usage $(basename "$0") login|cdk|sam"
     ;;

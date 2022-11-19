@@ -46,22 +46,36 @@ Install on MacOS
     sh install.macos
 ```
 
-### How to use
-Use must login to sso before you can use the script. If you have installed the aws helper script above, just run the script and chosse the profile to login. If not, just run aws native command below, the login session will last 8hours.
-
+### Use Case
+* Login to AWS Profile 
 ```
-    aws sso login --profile=profile_name
+aws login
+```
+* Choose a profile to run any aws cli command you want
+ E.g
+```
+    amz aws s3 ls 
+    amz cdk deploy 
+```
+* Connect ec2 intances using Session Manager (with aws cli helper )
+```
+    amz sc refresh|r filter_pattern
 ```
 
+* Connect ec2 intances using Session Manager (Maunally input profile name)
+```
+    sc profile_name refresh|r filter_pattern
+```
+### Explain SSM connect 
+```
+    sc profile_name refresh|r filter_pattern
+```
 The first argument is profile_name. (Required)
 
 The second argument is `r` or `refresh`. You need to refresh to see the change on instances (add/delete/change). (Optional)
 
 The third argument is the filter pattern. If you want to see the instances that contain the `filter_pattern` (Optional)
 
-```
-    sc profile_name refresh|r filter_pattern
-```
 
 
 

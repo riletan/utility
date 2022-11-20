@@ -70,7 +70,8 @@ case $1 in
     ;;
   sc)
     echo "Connecting to instance using Session Manager"
-    $@ --profile=$profile_name
+    $1 $profile_name $2 $3
+    ;;
   *)
     echo "Usage $(basename "$0") login|cdk|sam"
     ;;

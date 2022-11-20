@@ -12,9 +12,10 @@ else
     FILTER=$2
     [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
 fi
-SHOME=script_home_here
+SHOME=/home/riletan/utility/scripts
 TMP=$SHOME/tmp/.$CURRENT_PROFILE.instances
 SCACHE=$SHOME/tmp/.$CURRENT_PROFILE.cache
+echo $SCACHE
 PROMPT="On account: $CURRENT_PROFILE Please select a running instance to connect."
 ################### Helpful Function ############################
 function printName() 
@@ -55,7 +56,7 @@ function parseInstances()
     if [ $state == "running" ]; then
         local instanceID=`echo $1 | jq '.InstanceId'`
         local tags=`echo $1 | jq '.Tags'`
-        local name=$(getName "$tags") 
+        local name=$(getName "$tags" | xargs)
         local privateIP=`echo $1 | jq '.NetworkInterfaces' | jq -c '.[]' | jq '.PrivateIpAddress' | xargs echo`
         echo "{$instanceID:{\"Name\":\"$name\",\"PrivateIP\":\"$privateIP\",\"InstanceID\":$instanceID}}," >>  $SCACHE
         

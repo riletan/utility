@@ -49,7 +49,7 @@ Install on MacOS
 ## Use Cases
 * Login to AWS Profile 
 ```
-    aws login
+    amz login
 ```
 * Choose a profile to run any aws cli command you want
 ```
@@ -65,6 +65,12 @@ Install on MacOS
 ```
     sc profile_name refresh|r filter_pattern
 ```
+
+* Start/Stop ec2 intances
+```
+    sc profile_name refresh|r start|stop filter_pattern
+```
+
 ### Explain SSM connect 
 ```
     sc profile_name refresh|r filter_pattern

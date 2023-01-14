@@ -4,12 +4,14 @@
 # Required: aws-cli aws-session-manager-plugin jq xargs
 #################Configuration Section#############################
 if [ "$2" == "refresh" ] || [ "$2" == "r" ] ; then
-    FILTER=$3
+    FILTER=$4
+    OPTION=$3
     CURRENT_PROFILE=$1
     [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
 else
     CURRENT_PROFILE=$1
-    FILTER=$2
+    OPTION=$2
+    FILTER=$3
     [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
 fi
 SHOME=script_home_here
@@ -101,6 +103,24 @@ while true; do
     fi
 done
 value="$(sed -n "${n}p" $TMP)"
-echo "Connecting to instance $n: '$value'"
 IFS='|' read -ra ADDR <<< "$value" 
-aws --profile $CURRENT_PROFILE ssm start-session --target "${ADDR[1]}"
+
+case $OPTION in
+  connect)
+    echo "Connecting to instance $n: '$value'"
+    aws --profile $CURRENT_PROFILE ssm start-session --target "${ADDR[1]}"
+    ;;
+  stop)
+    echo "Stopping instance $n: '$value'"
+    aws --profile $CURRENT_PROFILE ec2 stop-instances --instance-ids "${ADDR[1]}"
+    ;;
+  start)
+    echo "Start instance $n: '$value'"
+    aws --profile $CURRENT_PROFILE ec2 start-instances --instance-ids "${ADDR[1]}"
+    ;;
+  *)
+    echo "Logging to $profile_name"
+    echo "Connecting to instance $n: '$value'"
+    aws --profile $CURRENT_PROFILE ssm start-session --target "${ADDR[1]}"
+    ;;
+esac

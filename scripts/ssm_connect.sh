@@ -14,7 +14,7 @@ else
     FILTER=$3
     [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
 fi
-SHOME=script_home_here
+SHOME=/Users/rile/utility/scripts
 TMP=$SHOME/tmp/.$CURRENT_PROFILE.instances
 SCACHE=$SHOME/tmp/.$CURRENT_PROFILE.cache
 echo $SCACHE
@@ -59,8 +59,9 @@ function parseInstances()
         local instanceID=`echo $1 | jq '.InstanceId'`
         local tags=`echo $1 | jq '.Tags'`
         local name=$(getName "$tags" | xargs)
-        local privateIP=`echo $1 | jq '.NetworkInterfaces' | jq -c '.[]' | jq '.PrivateIpAddress' | xargs echo`
-        echo "{$instanceID:{\"Name\":\"$name\",\"PrivateIP\":\"$privateIP\",\"InstanceID\":$instanceID}}," >>  $SCACHE
+        # Collect all private IPs into a JSON array
+        local privateIPs=`echo $1 | jq '.NetworkInterfaces | map(.PrivateIpAddress)'`
+        echo "{$instanceID:{\"Name\":\"$name\",\"PrivateIPs\":$privateIPs,\"InstanceID\":$instanceID}}," >>  $SCACHE
         
     fi
 }
@@ -77,7 +78,8 @@ list_instances=`cat $SCACHE | jq -c '.[]'`
 for instance in $list_instances; do 
     InstanceID=`echo $instance | jq -c '.[]' | jq '.InstanceID' | xargs echo`
     Name=`echo $instance | jq -c '.[]' | jq '.Name' | xargs echo`
-    PrivateID=`echo $instance | jq -c '.[]' | jq '.PrivateIP' | xargs echo`
+    # Get the first IP from the array
+    PrivateID=`echo $instance | jq -c '.[]' | jq '.PrivateIPs[0]' | xargs echo`
     if [ ! $InstanceID == "" ]; then
         if [ ! $FILTER == "" ]; then
             if [[ $Name == *"$FILTER"* ]]; then

@@ -14,7 +14,7 @@ else
     FILTER=$3
     [[ -z $CURRENT_PROFILE ]] && echo "Missing profile" && exit 1
 fi
-SHOME=/Users/rile/utility/scripts
+SHOME=script_home_here
 TMP=$SHOME/tmp/.$CURRENT_PROFILE.instances
 SCACHE=$SHOME/tmp/.$CURRENT_PROFILE.cache
 echo $SCACHE

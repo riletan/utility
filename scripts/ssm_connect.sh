@@ -20,6 +20,20 @@ SCACHE=$SHOME/tmp/.$CURRENT_PROFILE.cache
 echo $SCACHE
 PROMPT="On account: $CURRENT_PROFILE Please select a running instance to connect."
 ################### Helpful Function ############################
+function show_loading() {
+    local message="$1"
+    local pid=$2
+    local spin='-\|/'
+    local i=0
+    echo -n "$message "
+    while kill -0 $pid 2>/dev/null; do
+        i=$(( (i+1) %4 ))
+        printf "\r$message ${spin:$i:1}"
+        sleep .1
+    done
+    printf "\r$message done\n"
+}
+
 function printName() 
 {
     line='_______________________'
@@ -41,15 +55,17 @@ function getName()
 }
 function fetchInstances() 
 {   
-    echo "Fetching instances"
+    # echo "Fetching instances"
     rm -f $SCACHE
     echo "[" >> $SCACHE
-    aws ec2 --profile $CURRENT_PROFILE describe-instances --query "Reservations[].Instances[].{InstanceId: InstanceId, Tags: Tags, State: State, NetworkInterfaces: NetworkInterfaces}" --output json | jq -c '.[]' | while read object; do
-        # echo "$object" >> $SCACHE
+    (aws ec2 --profile $CURRENT_PROFILE describe-instances --query "Reservations[].Instances[].{InstanceId: InstanceId, Tags: Tags, State: State, NetworkInterfaces: NetworkInterfaces}" --output json | jq -c '.[]' | while read object; do
         parseInstances "$object"
     done
     echo "{}" >> $SCACHE
-    echo "]" >> $SCACHE
+    echo "]" >> $SCACHE) &
+    
+    show_loading "Fetching instances from AWS" $!
+    wait
 }
 
 function parseInstances()
@@ -59,6 +75,8 @@ function parseInstances()
         local instanceID=`echo $1 | jq '.InstanceId'`
         local tags=`echo $1 | jq '.Tags'`
         local name=$(getName "$tags" | xargs)
+        # Replace spaces with dashes in name
+        name=${name// /-}
         # Collect all private IPs into a JSON array
         local privateIPs=`echo $1 | jq '.NetworkInterfaces | map(.PrivateIpAddress)'`
         echo "{$instanceID:{\"Name\":\"$name\",\"PrivateIPs\":$privateIPs,\"InstanceID\":$instanceID}}," >>  $SCACHE
@@ -74,8 +92,9 @@ fi
 
 
 rm -f $TMP
-list_instances=`cat $SCACHE | jq -c '.[]'`
-for instance in $list_instances; do 
+# echo "Processing instances..."
+(list_instances=`cat $SCACHE | jq -c '.[]'`
+for instance in $list_instances; do
     InstanceID=`echo $instance | jq -c '.[]' | jq '.InstanceID' | xargs echo`
     Name=`echo $instance | jq -c '.[]' | jq '.Name' | xargs echo`
     # Get the first IP from the array
@@ -89,7 +108,10 @@ for instance in $list_instances; do
             echo "$Name|$InstanceID|$PrivateID" >> $TMP
         fi
     fi
-done
+done) &
+
+show_loading "Processing instance data" $!
+wait
 
 [[ ! -f $TMP ]] && echo "There're no instances matched on $CURRENT_PROFILE" && exit 1
 

@@ -4,5 +4,6 @@ cd utility/scripts
 chmod u+x ./*.sh
 sed -i -e "s|script_home_here|$PWD|g" ssm_connect.sh
 mkdir -p tmp
+sudo rm -rf /usr/local/bin/amz /usr/local/bin/sc
 sudo ln -s $PWD/aws_helper.sh /usr/local/bin/amz
 sudo ln -s $PWD/ssm_connect.sh /usr/local/bin/sc
